@@ -30,12 +30,12 @@
                                 <div class="row">
                                     <span> {{ $notification->text }} </span>
                                 </div>
-                               
-                                <span class="pull-left badge badge-{{ $getBadgeClassByType($notification->type) }}">
-                                    {{ $notification->type }}
-                                </span>
-                                <span class="pull-right text-muted small"> {{ $notification->time_ago }}</span>
-                                
+                               <div style="margin: 10px 0; height: 3px;">
+                                    <span class="pull-left badge badge-{{ $getBadgeClassByType($notification->type) }}">
+                                        {{ $notification->type }}
+                                    </span>
+                                    <span class="pull-right text-muted small"> {{ $notification->time_ago }}</span>
+                                </div>
                             </a>
                         </li>
                         @endforeach

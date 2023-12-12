@@ -3085,6 +3085,15 @@ fieldset[disabled] .btn-default.active {
   color: #fff;
   background-color: #333;
 }
+.badge-danger{
+  background-color: red !important;
+}
+.badge-warning{
+  background-color: #8a6d3b !important;
+}
+.badge-info{
+  background-color: #31708f !important;
+}
 .btn-primary {
   color: #fff;
   background-color: #337ab7;
