@@ -1,6 +1,6 @@
 <!-- resources/views/users/index.blade.php -->
 
-@extends('layouts.dashboard')
+@extends('layouts.home')
 
 @section('title', 'User List')
 
@@ -22,8 +22,14 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->phone_number }}</td>
-                    <td>{{ $user->unread_notifications  }}</td>
-                    <td><a href="">Impersonate</a></td>
+                    <td>{{ $user->unread_notifications }}</td>
+                    @if(auth()->check() && auth()->user()->roles->contains('name', 'admin'))
+                    <td>
+                        @if(!(auth()->user()->id == $user->id))
+                            <a href=""><button class="btn btn-primary" type="button">Impersonate</button></a>
+                        @endif
+                    </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

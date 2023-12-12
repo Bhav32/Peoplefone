@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Notifications;
+use Illuminate\Http\JsonResponse;
+use Auth;
 
 class NotificationController extends Controller
 {
@@ -14,7 +16,13 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Notifications::with('users')->get();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $notifications = Notifications::all();
+        } else {
+            $notifications = $user->notifications()->get();
+        }
         return view('Notifications.index', compact('notifications'));
     }
 
@@ -97,6 +105,12 @@ class NotificationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $notification = Notifications::findOrFail($id);
+        if($notification->delete()){
+            return new JsonResponse(['message' => 'Notification deleted successfully.'], 200);
+        }else{
+            return new JsonResponse(['message' => 'Notification not deleted.'], 500);
+
+        }
     }
 }

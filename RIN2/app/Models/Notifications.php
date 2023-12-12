@@ -22,6 +22,15 @@ class Notifications extends Model
         'user_id',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($notification) {
+            $notification->users()->detach();
+        });
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'notification_user', 'notification_id', 'user_id');

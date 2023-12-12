@@ -15,7 +15,6 @@ class UserController extends Controller
     public function index()
     {
         $users = User::withUnreadNotificationsCount()->get();
-
         return view('user.index', compact('users'));
     }
 

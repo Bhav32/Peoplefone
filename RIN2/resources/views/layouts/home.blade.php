@@ -20,7 +20,7 @@
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <span class="badge badge-danger">{{ $unreadNotificationCount }}</span> <i class="fa fa-caret-down"></i>
+                    <i class="fa fa-bell fa-fw"></i> <span class="badge badge-danger">{{ $UnreadNotificationsCount }}</span> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-alerts">
                     @if(isset($notifications) && count($notifications) > 0)
@@ -30,15 +30,17 @@
                                 <div class="row">
                                     <span> {{ $notification->text }} </span>
                                 </div>
-                                <div class="">
-                                    <span class="pull-left badge badge-{{ $getBadgeClassByType($notification->type) }}">
-                                        {{ $notification->type }}
-                                    </span>
-                                    <span class="pull-right text-muted small"> {{ $notification->time_ago }}</span>
-                                </div>
+                               
+                                <span class="pull-left badge badge-{{ $getBadgeClassByType($notification->type) }}">
+                                    {{ $notification->type }}
+                                </span>
+                                <span class="pull-right text-muted small"> {{ $notification->time_ago }}</span>
+                                
                             </a>
                         </li>
                         @endforeach
+                    @else
+                    <h4 class="text-center">No Notifications to show</h4>
                     @endif
                     <li class="divider"></li>
                     <li>
@@ -89,8 +91,8 @@
                         </span>
                         </div>-->
                     </li>
-                    <li class="{{ request()->is('home') ? 'active' : '' }}">
-                        <a href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
                     
                     <li>
@@ -109,9 +111,9 @@
                         <a href="#"><i class="fa fa-user fa-fw"></i> User<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li class="{{ request()->is('user') ? 'active' : '' }}">
-                            <a href="{{ route('user.index') }}"><i class="fa fa-user fa-fw"></i>User List</a>
+                                <a href="{{ route('user.index') }}"><i class="fa fa-user fa-fw"></i>User List</a>
                             </li>
-                            <li>
+                            <li class="{{ request()->is('user/*/edit') ? 'active' : '' }}">
                                 <a href="{{ route('user.edit', ['user' => Auth::user()]) }}"><i class="fa fa-gear fa-fw"></i>User Settings</a>
                             </li>
                         </ul>

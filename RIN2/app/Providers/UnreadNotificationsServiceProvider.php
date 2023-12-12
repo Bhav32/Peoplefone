@@ -13,14 +13,15 @@ class UnreadNotificationsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        View::composer('layouts.dashboard', function ($view) {
+        View::composer('layouts.home', function ($view) {
             if (Auth::check()) {
                 $user = Auth::user();
-                $userWithUnreadNotifications = $user->withUnreadNotificationsCount()->first();
+                $notifications =  $user->unreadNotifications();
+                $UnreadNotificationsCount = count($notifications);
 
                 $view->with([
-                    'notifications' => $userWithUnreadNotifications->notifications,
-                    'unreadNotificationCount' => $userWithUnreadNotifications->unread_notifications,
+                    'notifications' => $notifications,
+                    'UnreadNotificationsCount' => $UnreadNotificationsCount,
                 ]);
             }
         });

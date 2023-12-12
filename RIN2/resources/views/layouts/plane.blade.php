@@ -29,7 +29,7 @@
 </head>
 <body>
 	@yield('body')
-
 	<script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>
+	
 </body>
 </html>

@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.home')
 @section('title', 'Create New Notification')
 
 @section('content')

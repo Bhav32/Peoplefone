@@ -9,13 +9,14 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Notifications;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+//use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasPermissions;
 
 class User extends Authenticatable
 
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles, HasPermissions;
 
     /**
      * The attributes that are mass assignable.
@@ -56,12 +57,16 @@ class User extends Authenticatable
             ->withPivot('read');
     }
 
+    public function unreadNotifications()
+    {
+        return $this->notifications()->where('read', false)->get();
+    }
+    
     public function scopeWithUnreadNotificationsCount($query)
     {
         return $query->withCount(['notifications as unread_notifications' => function ($query) {
             $query->where('read', 0);
         }]);
     }
-
 
 }
