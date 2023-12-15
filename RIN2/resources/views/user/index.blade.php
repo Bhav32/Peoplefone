@@ -3,10 +3,9 @@
 @extends('layouts.home')
 
 @section('title', 'User List')
-
-@section('content')
     
-    <table class="table">
+@section('content')
+    <table class="display" id="userTable">
         <thead>
             <tr>
                 <th>Name</th>
@@ -17,22 +16,38 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($users as $user)
-                <tr>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->phone_number }}</td>
-                    <td>{{ $user->unread_notifications }}</td>
-                    @if(auth()->check() && auth()->user()->roles->contains('name', 'admin'))
-                    <td>
-                        @if(!(auth()->user()->id == $user->id))
-                            <a href=""><button class="btn btn-primary" type="button">Impersonate</button></a>
-                        @endif
-                    </td>
-                    @endif
-                </tr>
-            @endforeach
         </tbody>
     </table>
+    
+@endsection
+
+@section('page-js')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#userTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{{ route("user.datatable") }}',
+            columns: [
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
+                { data: 'phone_number', name: 'phone_number' },
+                { data: 'unread_notifications', name: 'unread_notifications'},
+                { data: 'action', name: 'action' },
+            ],
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    $('<input>').appendTo($(column.footer()).empty())
+                        .on('keyup', function () {
+                            column.search($(this).val()).draw();
+                        });
+                });
+            }
+        });
+    });
+</script>
+
 
 @endsection

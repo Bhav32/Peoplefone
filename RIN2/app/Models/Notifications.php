@@ -19,17 +19,7 @@ class Notifications extends Model
         'type',
         'text',
         'expiration',
-        'user_id',
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($notification) {
-            $notification->users()->detach();
-        });
-    }
 
     public function users()
     {

@@ -20,14 +20,22 @@
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <span class="badge badge-danger">{{ $UnreadNotificationsCount }}</span> <i class="fa fa-caret-down"></i>
+                    <i class="fa fa-bell fa-fw"></i> 
+                    @if($notification_switch)
+                    <span id="unread-notifications-count" class="badge badge-danger">
+                        {{ $UnreadNotificationsCount }}
+                    </span>
+                    @endif
+                    <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-alerts">
                     @if(isset($notifications) && count($notifications) > 0)
                         @foreach($notifications as $notification)
-                        <li class="alert alert-{{ $getBadgeClassByType($notification->type) }}" style="margin-bottom:0px;">
-                            <a href="#">
-                                <div class="row">
+                        <li id="notification-{{ $notification->id }}">
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
+                            <a class="alert alert-{{ $getBadgeClassByType($notification->type) }}" style="margin-bottom:0px; padding:20px;"
+                                onclick="markAsRead({{ $notification }})" >
+                                <div>
                                     <span> {{ $notification->text }} </span>
                                 </div>
                                <div style="margin: 10px 0; height: 3px;">
@@ -39,6 +47,7 @@
                             </a>
                         </li>
                         @endforeach
+                        <h4 class="text-center" id="end-notification"></h4>
                     @else
                     <h4 class="text-center">No Notifications to show</h4>
                     @endif
@@ -50,6 +59,7 @@
                         </a>
                     </li>
                 </ul>
+                
                 <!-- /.dropdown-alerts -->
             </li>
             <!-- /.dropdown -->
@@ -58,6 +68,10 @@
                     <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <p class="text-center" style="margin-top:5px; padding:5px;"> {{auth()->user()->email}} </p>
+                    </li>
+                    <li class="divider"></li>
                     <li><a href="{{ route('user.edit', ['user' => Auth::user()]) }}"><i class="fa fa-gear fa-fw"></i> User Settings</a>
                     </li>
                     <li class="divider"></li>
@@ -81,15 +95,7 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li class="sidebar-search">
-                        Admin Dashboard
-                        <!--<div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                        </div>-->
+                        <strong>Admin Dashboard</strong>
                     </li>
                     <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
                         <a href="{{ route('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
@@ -130,11 +136,13 @@
             <div class="row">
             <div class="col-lg-12">
                 <h2 class="page-header">@yield('title')</h2>
+                
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">  
             @yield('content')
+            @yield('page-js')
         </div>
         <!-- /#page-wrapper -->
     </div>

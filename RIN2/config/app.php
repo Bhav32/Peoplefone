@@ -170,8 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\UnreadNotificationsServiceProvider::class,
         App\Providers\NotificationsTypeBadgeServiceProvider::class,
-
-
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ])->toArray(),
 
     /*

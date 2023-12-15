@@ -3,8 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,8 +33,13 @@ Route::get('/', function () {
 })->middleware('guest');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('user/datatable', [UserController::class, 'datatable'])->name('user.datatable');
+    Route::get('user/impersonate/{user}', [UserController::class, 'impersonate'])->name('user.impersonate');
     Route::resource('user', UserController::class)->names('user');
+    
+    Route::post('/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
     Route::resource('notifications',NotificationController::class)->names('notifications');
 
 });

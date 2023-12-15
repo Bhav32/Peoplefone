@@ -22,6 +22,7 @@ class UnreadNotificationsServiceProvider extends ServiceProvider
                 $view->with([
                     'notifications' => $notifications,
                     'UnreadNotificationsCount' => $UnreadNotificationsCount,
+                    'notification_switch' => $user->notification_switch,
                 ]);
             }
         });

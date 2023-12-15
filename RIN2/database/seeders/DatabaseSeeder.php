@@ -35,6 +35,14 @@ class DatabaseSeeder extends Seeder
             'phone_number' => 9823728193,
         ]);
 
+         // Create a dummy user
+        User::create([
+            'name' => 'Gautam Tyagi',
+            'email' => 'gautam.tyagi@gmail.com',
+            'password' => bcrypt('gautam@123'),
+            'phone_number' => 9823728193,
+        ]);
+
         // Assign the "admin" role to the user
         $user->assignRole($adminRole);
     }

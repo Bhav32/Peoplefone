@@ -13,23 +13,28 @@
 		<div class="col-sm-3 col-xs-3">
 		    <div class="alert alert-{{ $getBadgeClassByType($notification->type) }}">
 		        <h4> 
+					@if(!(auth()->user()->roles->contains('name','admin')) && $notification->pivot->read)
+					<i class="fa fa-check fa-fw fa-2"></i> 
+					@endif
 					<span class="badge badge-{{ $getBadgeClassByType($notification->type) }}"> 
 						{{ ucwords($notification->type) }}
 					</span> 
+					
 				</h4>
                 <p>
                     {{ $notification->text }}
 		        </p>
 		        <hr class="message-inner-separator">
-                
 					<strong>Expiration:</strong> {{ $notification->expiration }}
-				
+
+				@if(auth()->check() && auth()->user()->roles->contains('name', 'admin'))
 				<span class="pull-right">
-					<a href=""><i class="fa fa-edit fa-fw fa-2"></i></a>
+					<a href="{{ route('notifications.edit', ['notification' => $notification]) }}"><i class="fa fa-edit fa-fw fa-2"></i></a>
 					<a href="javascript:void(0);" onclick="confirmDelete({{ $notification->id }})">
 						<i class="fa fa-trash fa-fw fa-2"></i>
 					</a>
 				</span>
+				@endif
 		    </div>
 		</div>
         @endforeach
